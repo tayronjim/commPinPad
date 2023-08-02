@@ -1,0 +1,38 @@
+﻿@page
+@model IndexModel
+@{
+}
+
+<form asp-page-handler="CancelarCompra" method="post">
+
+
+
+    <label>Monto:</label><br />
+    <input type="text" name="txtMonto" id="txtMonto" value="319.00" /><br />
+
+    <label>Credito/Debito:</label><br />
+    <input type="radio" for="txtTipo" name="txtTipo" value="credito" checked="checked" />Credito<br />
+    <input type="radio" for="txtTipo" name="txtTipo" value="debito" />Debito<br />
+
+    <label>Chip/Contacless:</label><br />
+    <input type="radio" for="txtEntryMode" name="txtEntryMode" value="051" checked="checked" />Chip<br />
+    <input type="radio" for="txtEntryMode" name="txtEntryMode" value="071" />Contacless<br />
+
+    <label>Cod. de Autorizacion:</label><br />
+    <input type="text" name="txtCodAuth" id="txtCodAuth" value="" /><br />
+
+    <label>Stan:</label><br />
+    <input type="text" name="txtStan" id="txtStan" value="1001" /><br />
+
+    <label>refNum:</label><br />
+    <input type="text" name="txtRefNum" id="txtRefNum" value="10010" /><br />
+
+    <label>TokenES:</label><br />
+    <input type="text" name="txtTokenES" id="txtTokenES" value="" /><br />
+
+    <label>TokenEZ:</label><br />
+    <input type="text" name="txtTokenEZ" id="txtTokenEZ" value="" /><br />
+
+
+    <button style="border-color:black;border-width:1px;" class="btn btn-default">Transaccion con tarjeta</button>
+</form>

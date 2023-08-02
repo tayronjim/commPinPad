@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "dgSpecHash": "xiI2fwabvqD0wxWHy5BoIdaGHRFAW+AU69Lz2wnf9qaTLZvy9rxbZBpOw0Yv5mGDzuEgaqTks5F3g8E+2dtzLQ==",
+  "success": true,
+  "projectFilePath": "/Users/tayron/CS/commpinpat net 5/commPinPad/commPinPad.csproj",
+  "expectedPackageFiles": [
+    "/Users/tayron/.nuget/packages/microsoft.netcore.platforms/5.0.0/microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/microsoft.win32.registry/5.0.0/microsoft.win32.registry.5.0.0.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/runtime.linux-arm.runtime.native.system.io.ports/6.0.0/runtime.linux-arm.runtime.native.system.io.ports.6.0.0.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/runtime.linux-arm64.runtime.native.system.io.ports/6.0.0/runtime.linux-arm64.runtime.native.system.io.ports.6.0.0.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/runtime.linux-x64.runtime.native.system.io.ports/6.0.0/runtime.linux-x64.runtime.native.system.io.ports.6.0.0.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/runtime.native.system.io.ports/6.0.0/runtime.native.system.io.ports.6.0.0.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/runtime.osx-arm64.runtime.native.system.io.ports/6.0.0/runtime.osx-arm64.runtime.native.system.io.ports.6.0.0.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/runtime.osx-x64.runtime.native.system.io.ports/6.0.0/runtime.osx-x64.runtime.native.system.io.ports.6.0.0.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/system.io.ports/6.0.0/system.io.ports.6.0.0.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/system.memory/4.5.4/system.memory.4.5.4.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/system.security.accesscontrol/5.0.0/system.security.accesscontrol.5.0.0.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/system.security.principal.windows/5.0.0/system.security.principal.windows.5.0.0.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/microsoft.aspnetcore.app.ref/5.0.0/microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/microsoft.netcore.app.host.osx-x64/5.0.17/microsoft.netcore.app.host.osx-x64.5.0.17.nupkg.sha512",
+    "/Users/tayron/.nuget/packages/microsoft.netcore.app.ref/5.0.0/microsoft.netcore.app.ref.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

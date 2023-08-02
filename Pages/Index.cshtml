@@ -1,0 +1,106 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+@functions{
+    public string GetHello()
+    {
+        return "Hello";
+    }
+
+    public string abrirPuerto1(string nombrePuerto)
+    {
+        Model.puertos = "";
+        //puertos = Request.Form["slcpuertos"];
+
+        if (Model.hasData)
+        {
+            var requestFormData = Request.Form;
+            Model.puertos = Request.Form["slcpuertos"];
+        }
+
+
+        //CompanyName = "texto";
+
+        return Model.puertos;
+    }
+}
+
+
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+
+        });
+
+    function RazorFunction() {
+        $("button").html('@GetHello()');
+    }
+
+        function abrirPuerto() {
+            $nombrePuerto = $("#slcpuertos").val();
+
+
+
+        }
+
+        function cerrarPuerto() {
+            $nombrePuerto = $("#slcpuertos").val();
+
+
+        }
+
+        function enviarTexto() {
+            $nombrePuerto = $("#slcpuertos").val();
+
+
+        }
+
+    </script>
+}
+
+<form asp-page-handler="AbrirPuerto" method="post">
+    <button class="btn btn-default">Abrir puerto</button>
+</form>
+
+<form asp-page-handler="CerrarPuerto" method="post">
+    <button class="btn btn-default">Cerrar puerto</button>
+</form>
+
+
+
+
+
+<form asp-page-handler="RespC53" method="post">
+    <button style="border-color:black;border-width:1px;" class="btn btn-default">Leer Resp C53</button>
+</form>
+
+
+
+
+<div>
+    <!--
+
+      <br />
+    <label>Log:</label><br />
+    <textarea id="txtLog" value="@Model.txtLog"></textarea>
+
+    <br />
+    <label>Recibido:</label><br />
+    <textarea id="txtRecibe" value="@Model.txtRecibido"></textarea>
+
+    <br />
+    <label>Enviado:</label><br />
+    <textarea id="txtSend" value="@Model.txtSendHexa"></textarea>
+
+
+    -->
+    <select name="slcpuertos" id="slcpuertos" asp-items="Model.portList"></select>
+
+
+</div>

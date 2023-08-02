@@ -1,0 +1,9 @@
+﻿@page
+@model IndexModel
+@{
+}
+
+<form asp-page-handler="EnviarTexto" method="post">
+    <input type="text" id="txttexto" name="txttexto" value="hola mundo" />
+    <button style="border-color:black;border-width:1px;" class="btn btn-default">Enviar</button>
+</form>

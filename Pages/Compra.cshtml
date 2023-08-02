@@ -1,0 +1,34 @@
+﻿@page
+@model IndexModel
+@{
+}
+
+<form asp-page-handler="SolicitarPago" method="post">
+
+    <label>Direccion(Calle):</label><br />
+    <input type="text" name="txtDir" id="txtDir" value="Patria" /><br />
+
+    <label>Monto:</label><br />
+    <input type="text" name="txtMonto" id="txtMonto" value="319.00" /><br />
+
+    <label>Credito/Debito:</label><br />
+    <input type="radio" for="txtTipo" name="txtTipo" value="credito" checked="checked" />Credito<br />
+    <input type="radio" for="txtTipo" name="txtTipo" value="debito" />Debito<br />
+
+    <label>ID SubAfiliado:</label><br />
+    <input type="text" name="txtSubAfiliadoId" id="txtSubAfiliadoId" value="10252" /><br />
+
+    <label>transId:</label><br />
+    <input type="text" name="txtTransId" id="txtTransId" value="" /><br />
+
+    <label>Stan:</label><br />
+    <input type="text" name="txtStan" id="txtStan" value="1001" /><br />
+
+    <label>refNum:</label><br />
+    <input type="text" name="txtRefNum" id="txtRefNum" value="10011" /><br />
+
+    
+
+
+    <button style="border-color:black;border-width:1px;" class="btn btn-default">Transaccion con tarjeta</button>
+</form>
