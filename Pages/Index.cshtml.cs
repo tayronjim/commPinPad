@@ -431,10 +431,10 @@ namespace commPinPad.Pages
 
                 /*  ----Cerrar Pinpad en pruebas------  */
 
-                txtHexa = comando_72();
-                enviarCodigos(txtHexa);
+                //txtHexa = comando_72();
+                //enviarCodigos(txtHexa);
                 
-                return;
+                //return;
 
                 /*  -----                       -----  */
 
@@ -1349,6 +1349,7 @@ namespace commPinPad.Pages
                     }
                     
                 } while (i < longC53Dec);
+
                 int p = 0;
                 
                 foreach (string values in valuesC53  ) {
