@@ -1,24 +1,17 @@
 ﻿<Properties StartupConfiguration="{4A56EEB6-337A-4B06-9085-8A15354F2BD7}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/tayron/CS/commpinpat net 5/commPinPad/Pages/Index.cshtml.cs" relfile="Pages/Index.cshtml.cs" line="1342" column="1" />
-    </BreakpointStore>
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workbench ActiveDocument="Pages/Index.cshtml.cs">
     <Files>
       <File FileName="Pages/Index.cshtml" />
-      <File FileName="Pages/Index.cshtml.cs" Line="427" Column="39" />
-      <File FileName="Pages/Cancelar.cshtml" Line="6" Column="25" />
-      <File FileName="Pages/AServerVals.cs" Line="1" Column="1" />
+      <File FileName="Pages/Index.cshtml.cs" Line="1384" Column="48" />
+      <File FileName="Pages/Cancelar.cshtml" Line="37" Column="40" />
+      <File FileName="Pages/Compra.cshtml" Line="15" Column="87" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="commPinPad" expanded="True">
-            <Node name="commPinPad" expanded="True">
-              <Node name="Pages" expanded="True">
+          <Node name="commPinPad">
+            <Node name="commPinPad">
+              <Node name="Pages">
                 <Node name="Shared" expanded="True" />
                 <Node name="Index.cshtml" expanded="True">
                   <Node name="Index.cshtml.cs" selected="True" />
@@ -31,6 +24,13 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.commPinPad PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/tayron/CS/commpinpat net 5/commPinPad/Pages/Index.cshtml.cs" relfile="Pages/Index.cshtml.cs" line="1350" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

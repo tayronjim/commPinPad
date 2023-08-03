@@ -1,9 +1,10 @@
 ﻿@page
-@model IndexModel
+@model NewKeyModel
 @{
 }
 
 <form asp-page-handler="GeneraLlave" method="post">
+
     <label>transId:</label><br />
     <input type="text" name="txtTransIdKeyGen" id="txtTransIdKeyGen" value="" /><br />
 
@@ -12,5 +13,6 @@
 
     <label>refNum:</label><br />
     <input type="text" name="txtRefNumKeyGen" id="txtRefNumKeyGen" value="90010" /><br />
+
     <button style="border-color:black;border-width:1px;" class="btn btn-default">Inicializar Llaves</button>
 </form>

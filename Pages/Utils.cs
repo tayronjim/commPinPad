@@ -60,6 +60,92 @@ namespace commPinPad.Pages
                 return "2".BuildTag("Response") + e.Message.BuildTag("ErrMsg");
             }
         }
+
+        public static string longitudParametros(string parametros)
+        {
+            parametros = parametros.Replace(" ", "");
+            int longBytes = parametros.Length / 2;
+            string longHex = longBytes.ToString("X");
+            int i = longHex.Length;
+
+            while (i < 4)
+            {
+                longHex = "0" + longHex;
+                i++;
+            }
+            return longHex;
+        }
+
+        public static string getDate()
+        {
+            DateTime now = DateTime.Now;
+            return now.ToString("yy MM dd");
+        }
+
+        public static string getTime()
+        {
+            DateTime now = DateTime.Now;
+            return now.ToString("HH mm ss");
+        }
+        public static string strAddXOR(string strNumHexa)
+        {
+            int i = 0;
+            long lSuma = 0;
+            long lngLongitud = 0;
+            string strSumaxOR = "";
+            string strHexa = strNumHexa.Replace(" ", "");
+
+            try
+            {
+                lngLongitud = strHexa.Length;
+                if (lngLongitud < 2) return "";
+                for (i = 0; i < lngLongitud; i = i + 2)
+                {
+                    lSuma = lSuma ^ Convert.ToInt64(strHexa.Trim().Substring(i, 2), 16);
+                }
+
+                strSumaxOR = Uri.HexEscape((char)lSuma);
+                strSumaxOR = strSumaxOR.Substring(strSumaxOR.Length - 2, 2);
+                return strSumaxOR;
+            }
+
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+        public static string readShortToken(string longToken, ref int i, ref string[] respList)
+        {
+            string valToken = "";
+            int j = Int16.Parse(longToken);
+            while (j > 0)
+            {
+                valToken += " ";
+                valToken += respList[i]; i++; j--;
+            }
+            return valToken;
+        }
+
+        public static string readLongToken(ref int i, ref string[] respList)
+        {
+            string headToken = "";
+            string valToken = "";
+            string longToken = "";
+            int j = 1;
+            headToken += respList[i - 1];
+            do
+            {
+                headToken += " ";
+                headToken += respList[i];
+                if (j > 3 && j < 9) { longToken += Convert.ToChar(Int16.Parse(respList[i])); }
+                i++; j++;
+            } while (j < 10);
+
+            j = Int16.Parse(longToken);
+
+            while (j > 0) { valToken += " " + respList[i]; i++; j--; }
+
+            return headToken + valToken;
+        }
+
     }
 
     public class XtrPost
@@ -94,6 +180,9 @@ namespace commPinPad.Pages
         {
             param.Add(new xparam { tag = Tag, valor = Val });
         }
+
+        
+
     }
 
 
