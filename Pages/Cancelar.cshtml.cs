@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace commPinPad.Pages
 {
-	public class CompraModel : PageModel
+	public class CancelarModel : PageModel
     {
         public void OnGet()
         {

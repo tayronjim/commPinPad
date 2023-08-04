@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
@@ -453,6 +454,115 @@ namespace commPinPad.Pages
             cerrarPuerto();
         }
 
+        public static void solicitarPago(string transId, string monto, string stan, string refNum, string tipo, string dir, string subAfId)
+        {
+            String txtHexa = "";
+            string respuesta = "";
+            string date = "";
+            string time = "";
+            txtHexa = comando_C50(monto);
+            respuesta = enviarCodigos(txtHexa);
+            Console.WriteLine(respuesta);
+            if (respuesta.Replace(" ", "") == "6") { _continue = true; respuesta = Read(); }
+            Console.WriteLine(respuesta);
+            if (respuesta.Replace(" ", "") == "4") { return; }
+
+            if (respuesta.Length < 11) { return; }
+            string validador = respuesta.Replace(" ", "").Substring(0, 11);
+            if (validador == "26753484848")
+            {
+                Console.WriteLine("Recibe respuesta Comando C50 positivo");
+                _continue = true;
+                date = Utils.getDate();
+                time = Utils.getTime();
+                txtHexa = comando_C51(monto, date, time);
+                respuesta = enviarCodigos(txtHexa);
+                if (respuesta.Replace(" ", "") == "6") { _continue = true; respuesta = Read(); }
+                Console.WriteLine(respuesta);
+                if (respuesta.Replace(" ", "") == "4") { return; }
+            }
+            Console.WriteLine(respuesta);
+
+            if (respuesta.Length < 11) { return; }
+            validador = respuesta.Replace(" ", "").Substring(0, 11);
+            if (validador == "26753514848" || validador == "26753515050") // respuesta C53
+            {
+                if (validador == "26753515050")
+                {
+                    Console.WriteLine("Recibe respuesta Comando C53 Contacless");
+                }
+                else { Console.WriteLine("Recibe respuesta Comando C53 Operación exitosa"); }
+
+                XtrPost postCompra = getValuesRespC53(respuesta);
+
+                string mti = "0200";
+                postCompra.Add("mti", mti);
+                postCompra.Add("localDate", date);
+                postCompra.Add("localTime", time);
+                postCompra.Add("monto", monto);
+                postCompra.Add("transactionID", transId);
+                postCompra.Add("stan", stan);
+                postCompra.Add("refNumber", refNum);
+                postCompra.Add("cardType", tipo);
+                postCompra.Add("dir", dir);
+                postCompra.Add("subAfId", subAfId);
+
+                Console.WriteLine("**Monto: " + monto);
+                Console.WriteLine("**Tipo tarejta: " + tipo);
+                Console.WriteLine("**Stan: " + stan);
+                Console.WriteLine("**RefNumber: " + refNum);
+
+                string datosRespC53 = "";
+                datosRespC53 = Post.toHost(postCompra);
+
+                var checkResp = datosRespC53.Substring(0,7);
+                if (checkResp == "(error)") { return; }
+
+                /*  ----Cerrar Pinpad en pruebas------  */
+
+                //txtHexa = comando_72();
+                //enviarCodigos(txtHexa);
+
+                //return;
+
+                /*  -----                       -----  */
+
+                //Console.WriteLine(datosRespC53);
+                _continue = true;
+                try
+                {
+                    var resCode210 = readCode210(datosRespC53);
+                    string authId = resCode210.Item1;
+                    Console.WriteLine("**autorizacionId: " + authId);
+                    string respCode = resCode210.Item2;
+                    Console.WriteLine("**respCode: " + respCode);
+                    string AuthData = resCode210.Item3;
+                    Console.WriteLine("**AuthData: " + AuthData);
+                    txtHexa = comando_C54(authId, respCode, AuthData);
+                }
+                catch (Exception e) { Console.WriteLine(e); return; }
+
+
+
+                //txtHexa = comando_C54();
+                respuesta = enviarCodigos(txtHexa);
+                //Console.WriteLine(respuesta);
+                if (respuesta.Replace(" ", "") == "6") { _continue = true; respuesta = Read(); }
+                Console.WriteLine(respuesta);
+                if (respuesta.Replace(" ", "") == "4") { return; }
+                Console.WriteLine(respuesta);
+            }
+            if (validador == "26753524848" || validador == "26753525050")  // respuesta C54 
+            {
+                if (validador == "26753515050") { Console.WriteLine("Recibe respuesta Comando C54 Contacless"); }
+                else { Console.WriteLine("Recibe respuesta Comando C54 Operación exitosa"); }
+
+                // Completado fuera de linea, no requiere enviar nada al host
+
+            }
+        }
+
+
         public static string enviarCodigos(string txtHexa)
         {
             txtHexa = txtHexa.Replace(" ", "");
@@ -573,6 +683,7 @@ namespace commPinPad.Pages
                 {
                     bytesToRead = (int)serialPort1.BytesToRead;
                     Console.WriteLine("bytesToRead: " + bytesToRead);
+                    Console.WriteLine("continue: " + _continue);
                     if (bytesToRead > 0 && _continue)
                     {
                         cache = new byte[bytesToRead];
@@ -580,7 +691,7 @@ namespace commPinPad.Pages
 
                         for (int j = 0; j < bytesToRead; j++)
                         {
-                            if (bytesToRead > 1 && cache[0] == 6 && j == 0) { j++; Console.WriteLine("Responde: 6 *"); }
+                            //if (bytesToRead > 1 && cache[0] == 6 && j == 0) { j++; Console.WriteLine("Responde: 6 *"); }
                             respuesta += cache[j] + " ";
                         }
                         interpreteRespuesta(respuesta);
@@ -611,17 +722,19 @@ namespace commPinPad.Pages
                 bytes[j] = Convert.ToByte(respList[j]);
             }
 
+            Console.WriteLine("tam resp: " + respList.Length);
+
 
             String codInicio = respList[0];
-            Boolean continua = true;
+            //Boolean continua = true;
             Console.WriteLine("Responde: " + respuesta);
-            /*switch (codInicio)
+            switch (codInicio)
             {
-                case "6": txtLog += "06 Recepción de un mensaje exitosa\n"; continua = false; break;
-                case "4": txtLog += "04 End Of Transmission.Cerrando la conexión.\n"; continua = false; break;
-                case "21": txtLog += "21  Mensaje no recibido de forma exitosa\n"; continua = false; break;
-                case "2": txtLog += "02 Inicio de un mensaje "; break;
-            }*/
+                case "6": Console.WriteLine("06 Recepción de un mensaje exitosa"); _continue = false; break;
+                case "4": Console.WriteLine("04 End Of Transmission.Cerrando la conexión."); _continue = false; break;
+                case "21": Console.WriteLine("21  Mensaje no recibido de forma exitosa"); _continue = false; break;
+                case "2": Console.WriteLine("02 Inicio de un mensaje "); break;
+            }
             int i = 1;
             string tipoMensaje = "";
             string estatus = "";
@@ -633,7 +746,7 @@ namespace commPinPad.Pages
             string tmpParam = "";
             string[] data = new String[3];
 
-            if (continua)
+            if (_continue)
             {
 
                 do { tipoMensaje += Convert.ToChar(bytes[i]); i++; } while (i <= 3);
@@ -764,111 +877,7 @@ namespace commPinPad.Pages
 
         }
 
-        public static void solicitarPago(string transId, string monto, string stan, string refNum, string tipo, string dir, string subAfId)
-        {
-            String txtHexa = "";
-            string respuesta = "";
-            string date = "";
-            string time = "";
-            txtHexa = comando_C50(monto);
-            respuesta = enviarCodigos(txtHexa);
-            Console.WriteLine(respuesta);
-            if (respuesta.Replace(" ", "") == "6") { _continue = true; respuesta = Read(); }
-            Console.WriteLine(respuesta);
-            if (respuesta.Replace(" ", "") == "4") { return; }
-
-            if (respuesta.Length < 11) { return; }
-            string validador = respuesta.Replace(" ", "").Substring(0, 11);
-            if (validador == "26753484848")
-            {
-                Console.WriteLine("Recibe respuesta Comando C50 positivo");
-                _continue = true;
-                date = Utils.getDate();
-                time = Utils.getTime();
-                txtHexa = comando_C51(monto, date, time);
-                respuesta = enviarCodigos(txtHexa);
-                if (respuesta.Replace(" ", "") == "6") { _continue = true; respuesta = Read(); }
-                Console.WriteLine(respuesta);
-                if (respuesta.Replace(" ", "") == "4") { return; }
-            }
-            Console.WriteLine(respuesta);
-
-            if (respuesta.Length < 11) { return; }
-            validador = respuesta.Replace(" ", "").Substring(0, 11);
-            if (validador == "26753514848" || validador == "26753515050") // respuesta C53
-            {
-                if (validador == "26753515050")
-                {
-                    Console.WriteLine("Recibe respuesta Comando C53 Contacless");
-                }
-                else { Console.WriteLine("Recibe respuesta Comando C53 Operación exitosa"); }
-
-                XtrPost postCompra = getValuesRespC53(respuesta);
-
-                string mti = "0200";
-                postCompra.Add("mti", mti);
-                postCompra.Add("localDate", date);
-                postCompra.Add("localTime", time);
-                postCompra.Add("monto", monto);
-                postCompra.Add("transactionID", transId);
-                postCompra.Add("stan", stan);
-                postCompra.Add("refNumber", refNum);
-                postCompra.Add("cardType", tipo);
-                postCompra.Add("dir", dir);
-                postCompra.Add("subAfId", subAfId);
-
-                Console.WriteLine("**Monto: " + monto);
-                Console.WriteLine("**Tipo tarejta: " + tipo);
-                Console.WriteLine("**Stan: " + stan);
-                Console.WriteLine("**RefNumber: " + refNum);
-
-                string datosRespC53 = "";
-                datosRespC53 = Post.toHost(postCompra);
-
-                /*  ----Cerrar Pinpad en pruebas------  */
-
-                //txtHexa = comando_72();
-                //enviarCodigos(txtHexa);
-
-                //return;
-
-                /*  -----                       -----  */
-
-                //Console.WriteLine(datosRespC53);
-                _continue = true;
-                try
-                {
-                    var resCode210 = readCode210(datosRespC53);
-                    string authId = resCode210.Item1;
-                    Console.WriteLine("**autorizacionId: " + authId);
-                    string respCode = resCode210.Item2;
-                    Console.WriteLine("**respCode: " + respCode);
-                    string AuthData = resCode210.Item3;
-                    Console.WriteLine("**AuthData: " + AuthData);
-                    txtHexa = comando_C54(authId, respCode, AuthData);
-                }
-                catch (Exception e) { Console.WriteLine(e); txtHexa = comando_72(); }
-
-
-
-                //txtHexa = comando_C54();
-                respuesta = enviarCodigos(txtHexa);
-                //Console.WriteLine(respuesta);
-                if (respuesta.Replace(" ", "") == "6") { _continue = true; respuesta = Read(); }
-                Console.WriteLine(respuesta);
-                if (respuesta.Replace(" ", "") == "4") { return; }
-                Console.WriteLine(respuesta);
-            }
-            if (validador == "26753524848" || validador == "26753525050")  // respuesta C54 
-            {
-                if (validador == "26753515050") { Console.WriteLine("Recibe respuesta Comando C54 Contacless"); }
-                else { Console.WriteLine("Recibe respuesta Comando C54 Operación exitosa"); }
-
-                // Completado fuera de linea, no requiere enviar nada al host
-
-            }
-        }
-
+        
         static XtrPost getValuesRespC53(string respuestaC53)
         {
 
